@@ -40,5 +40,5 @@ func main() {
 		task := task.NewTask(fmt.Sprintf("task-%d", i), fn, task.MediumPriority)
 		a.SubmitTask(task)
 	}
-	a.SoftStop()
+	time.Sleep(time.Second * 2)
 }

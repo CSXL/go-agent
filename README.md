@@ -4,7 +4,7 @@
 
 ## Current Status
 
-We are currently developing the projects MVP. Come back later for more updates!
+MVP was developed with the help of AI-assisted development. We are currently developing an AI-assisted project generator ([Solus](github.com/CSXL/solus)), so we are using this project as a testing ground for manual experimentation. In other words, we are using this project to actuate the language models ourselves so we can create the autonomous agents better.
 
 ## Requirements
 

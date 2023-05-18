@@ -35,6 +35,23 @@ func (s *Scheduler) Stop() {
 	s.executor.Stop()
 }
 
+// SoftStop gracefully shuts down the scheduler and its executor after all tasks have completed.
+func (s *Scheduler) SoftStop() {
+	// Wait for the priorty map to be empty.
+	for {
+		s.mu.Lock()
+		empty := len(s.priorityMap[task.HighPriority]) == 0 &&
+			len(s.priorityMap[task.MediumPriority]) == 0 &&
+			len(s.priorityMap[task.LowPriority]) == 0
+		s.mu.Unlock()
+
+		if empty {
+			break
+		}
+	}
+	s.Stop()
+}
+
 // Submit adds a task to the scheduler's task queue.
 func (s *Scheduler) Submit(t *task.Task) {
 	s.mu.Lock()

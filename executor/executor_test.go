@@ -25,6 +25,13 @@ func TestExecutorStartStop(t *testing.T) {
 	// Ensure that the executor can be started and stopped without any issues.
 }
 
+func TestExecutorSoftStop(t *testing.T) {
+	ex := executor.NewExecutor(4)
+	ex.Start()
+
+	ex.SoftStop()
+}
+
 func TestExecutorSubmit(t *testing.T) {
 	ex := executor.NewExecutor(4)
 	ex.Start()

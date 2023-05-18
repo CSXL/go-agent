@@ -49,7 +49,7 @@ func (s *Scheduler) SoftStop() {
 			break
 		}
 	}
-	s.Stop()
+	s.executor.SoftStop()
 }
 
 // Submit adds a task to the scheduler's task queue.

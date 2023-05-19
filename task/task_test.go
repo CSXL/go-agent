@@ -132,3 +132,27 @@ func TestTaskWait(t *testing.T) {
 		assert.Equal(t, context.DeadlineExceeded, err)
 	})
 }
+
+func TestTaskDependencies(t *testing.T) {
+	tsk := task.NewTask("test_task", func(ctx context.Context) error {
+		time.Sleep(100 * time.Millisecond)
+		return nil
+	}, task.LowPriority)
+
+	otherTsk := task.NewTask("test_task", func(ctx context.Context) error {
+		time.Sleep(100 * time.Millisecond)
+		return nil
+	}, task.LowPriority)
+	t.Run("get/add/remove dependencies", func(t *testing.T) {
+		tsk.AddDependency(otherTsk)
+
+		assert.Equal(t, 1, len(tsk.Dependencies()))
+		assert.Equal(t, otherTsk, tsk.Dependencies()[0])
+
+		expectedDependencies := []*task.Task{otherTsk}
+		assert.Equal(t, expectedDependencies, tsk.Dependencies())
+
+		tsk.RemoveDependency(otherTsk)
+		assert.Equal(t, 0, len(tsk.Dependencies()))
+	})
+}

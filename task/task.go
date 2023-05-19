@@ -21,11 +21,12 @@ const (
 
 // Task represents a unit of work that can be executed concurrently.
 type Task struct {
-	id       string
-	fn       func(context.Context) error
-	priority Priority
-	cancel   context.CancelFunc
-	done     chan struct{}
+	id           string
+	fn           func(context.Context) error
+	priority     Priority
+	dependencies []*Task
+	cancel       context.CancelFunc
+	done         chan struct{}
 }
 
 // NewTask creates a new task with the given ID, function, and priority.
@@ -35,6 +36,26 @@ func NewTask(id string, fn func(context.Context) error, priority Priority) *Task
 		fn:       fn,
 		priority: priority,
 		done:     make(chan struct{}),
+	}
+}
+
+// AddDependency adds a dependency to the task.
+func (t *Task) AddDependency(dependency *Task) {
+	t.dependencies = append(t.dependencies, dependency)
+}
+
+// Dependencies returns the task's dependencies.
+func (t *Task) Dependencies() []*Task {
+	return t.dependencies
+}
+
+// RemoveDependency removes a dependency from the task.
+func (t *Task) RemoveDependency(dependency *Task) {
+	for i, dep := range t.dependencies {
+		if dep == dependency {
+			t.dependencies = append(t.dependencies[:i], t.dependencies[i+1:]...)
+			break
+		}
 	}
 }
 

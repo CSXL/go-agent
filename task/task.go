@@ -59,6 +59,18 @@ func (t *Task) RemoveDependency(dependency *Task) {
 	}
 }
 
+// IsReady returns true if the task has no dependencies or all of its dependencies have completed execution.
+func (t *Task) IsReady() bool {
+	for _, dep := range t.dependencies {
+		select {
+		case <-dep.done:
+		default:
+			return false
+		}
+	}
+	return true
+}
+
 // ID returns the task's unique identifier.
 func (t *Task) ID() string {
 	return t.id

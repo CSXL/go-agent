@@ -155,4 +155,9 @@ func TestTaskDependencies(t *testing.T) {
 		tsk.RemoveDependency(otherTsk)
 		assert.Equal(t, 0, len(tsk.Dependencies()))
 	})
+
+	t.Run("check dependencies", func(t *testing.T) {
+		tsk.AddDependency(otherTsk)
+		assert.False(t, tsk.IsReady())
+	})
 }
